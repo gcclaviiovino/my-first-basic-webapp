@@ -26,8 +26,15 @@ const db = new sqlite3.Database(path.resolve(__dirname, 'data.sqlite'), (err) =>
 db.run(`
 	CREATE TABLE IF NOT EXISTS users (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		name TEXT NOT NULL
+		name TEXT NOT NULL,
+		email TEXT UNIQUE NOT NULL,
+		age INTEGER
 	)
 `);
+
+db.serialize(() => {
+	db.run(`ALTER TABLE users ADD COLUMN email TEXT`);
+	db.run(`ALTER TABLE users ADD COLUMN age INTEGER`);
+});
 
 module.exports = db;

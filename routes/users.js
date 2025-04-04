@@ -28,15 +28,26 @@ const getUsers = (req, res) => {
 };
 
 const addUser = (req, res) => {
-	const { name } = req.body;
+	const { name, email, age } = req.body;
 	if (!name || name.trim() === '') {
 		return res.status(404).json({ error: "Name is required"});
 	}
 
-	const sql = 'INSERT INTO users (name) VALUES (?)';
-	db.run(sql, [name], function (err) {
+	if (!email || email.trim() === '') {
+		return res.status(404).json({ error: "Email is required"});
+	}
+	const sql = 'INSERT INTO users (name, email, age) VALUES (?, ?, ?)';
+	db.run(sql, [name, email, age], function (err) {
 		if (err) res.status(500).json({ error: err.message });
-		res.status(201).json({ id: this.lastID, name });
+		res.status(201).json({ 
+			message: 'User added successfully',
+			user: {
+				id: this.lastID,
+				name,
+				email,
+				age
+			}
+		});
 	});
 };
 
