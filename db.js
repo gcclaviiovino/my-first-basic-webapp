@@ -29,12 +29,28 @@ db.run(`
 		name TEXT NOT NULL,
 		email TEXT UNIQUE NOT NULL,
 		age INTEGER
-	)
+		)
+	`);
+
+db.run(`
+		CREATE TABLE IF NOT EXISTS logs (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			user_id INTEGER,
+			action TEXT,
+			timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+		)
 `);
 
-db.serialize(() => {
-	db.run(`ALTER TABLE users ADD COLUMN email TEXT`);
-	db.run(`ALTER TABLE users ADD COLUMN age INTEGER`);
-});
+// db.serialize(() => {
+// 	db.run('DROP TABLE IF EXISTS logs')
+// 	db.run(`
+// 		CREATE TABLE IF NOT EXISTS logs (
+// 			id INTEGER PRIMARY KEY AUTOINCREMENT,
+// 			user_id INTEGER,
+// 			action TEXT,
+// 			timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+// 		)
+// 	`);
+// });
 
 module.exports = db;

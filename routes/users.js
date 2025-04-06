@@ -10,6 +10,7 @@
 // }
 
 const db = require('../db');
+const logAction = require('../utils');
 
 const getUsers = (req, res) => {
 	let sql = 'SELECT * FROM users';
@@ -36,9 +37,12 @@ const addUser = (req, res) => {
 	if (!email || email.trim() === '') {
 		return res.status(404).json({ error: "Email is required"});
 	}
+	const sql2 = ('SELECT * FROM users WHERE (email) = ?', [email]);
+	if (sql2) return res.status(404).json({ error: "Email already registered"});
 	const sql = 'INSERT INTO users (name, email, age) VALUES (?, ?, ?)';
 	db.run(sql, [name, email, age], function (err) {
 		if (err) res.status(500).json({ error: err.message });
+		logAction(this.lastID, 'Added user');
 		res.status(201).json({ 
 			message: 'User added successfully',
 			user: {
@@ -62,6 +66,7 @@ const deleteUser = (req, res) => {
 
 		db.run('DELETE FROM users WHERE id = ?', [id], function (err) {
 			if (err) return res.status(500).json({ error: err.message });
+			logAction(row.id, 'Deleted user');
 			res.json({ message: `User ${row.id} (${row.name}) successfully deleted`});
 		});
 	});
@@ -77,7 +82,7 @@ const updateUser = (req, res) => {
 		if (this.changes === 0) {
 			return res.status(404).json({ error: `User with id ${id} not found` });
 		}
-
+		logAction(id, 'Updated user');
 		res.json({ message: `User updated with new name ${name}` });
 	});
 };
