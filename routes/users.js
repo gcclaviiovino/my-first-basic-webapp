@@ -28,21 +28,30 @@ const getUsers = (req, res) => {
 	});
 };
 
-const addUser = (req, res) => {
+const checkEmailExistence = (email) => {
+	return new Promise((resolve, reject) => {
+		const sql = 'SELECT * FROM users WHERE email = ?';
+		db.get(sql, [email], (err, existingUser) => {
+			if (err) reject(err);
+			if (existingUser) {
+				reject('Email already registered');
+			}
+			resolve();
+		});
+	});
+};
+
+const addUser = async (req, res) => { // without authentication (== no password)
 	const { name, email, age } = req.body;
-	if (!name || name.trim() === '') {
-		return res.status(404).json({ error: "Name is required"});
+	if (!name || !email) {
+		return res.status(404).json({ error: "Name and email are required"});
 	}
 
-	if (!email || email.trim() === '') {
-		return res.status(404).json({ error: "Email is required"});
+	try {
+		await checkEmailExistence(email);
+	} catch (error) {
+		return res.status(404).json({ error: error });
 	}
-
-	const checkEmailSql = 'SELECT * FROM users WHERE email = ?';
-	db.get(checkEmailSql, [email], (err, row) => {
-		if (err) return res.status(500).json({ error: err.message });
-		if (row) return res.status(404).json({ error: "Email already registered"});
-	})
 
 	const insertSql = 'INSERT INTO users (name, email, age) VALUES (?, ?, ?)';
 	db.run(insertSql, [name, email, age], function (err) {
@@ -79,16 +88,45 @@ const deleteUser = (req, res) => {
 
 const updateUser = (req, res) => {
 	const id = parseInt(req.params.id);
-	const { name } = req.body;
+	const { name, email, age } = req.body;
 
-	db.run('UPDATE users SET name = ? WHERE id = ?', [name, id], function (err) {
+	const fields = [];
+	const values = [];
+
+	if (name) {
+		fields.push('name = ?');
+		values.push(name);
+	}
+	if (email) {
+		fields.push('email = ?');
+		values.push(email);
+	}
+	if (age) {
+		fields.push('age = ?');
+		values.push(age);
+	}
+
+	if (fields.lenght === 0) return res.status(400).json({ error: 'No fields provided to update' });
+
+	values.push(id);
+
+	const sql = `UPDATE users SET ${fields.join(", ")} WHERE id = ?`;
+
+	db.run(sql, values, function (err) {
 		if (err) return res.status(500).json({ error: err.message });
-
 		if (this.changes === 0) {
 			return res.status(404).json({ error: `User with id ${id} not found` });
 		}
 		logAction(id, 'Updated user');
-		res.json({ message: `User updated with new name ${name}` });
+		if (fields.length === 1) {
+			const fieldName = fields[0].split('=')[0].trim();
+			res.json({ message: `User ${fieldName} updated with new value (${values[0]})` });
+		} else {
+			res.json({
+				message: 'User updated successfully',
+				updatedFields: fields.map((f, i) => `${f.split('=')[0].trim()}: ${values[i]}`)
+			});
+		}
 	});
 };
 

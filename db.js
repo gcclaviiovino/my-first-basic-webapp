@@ -28,7 +28,8 @@ db.run(`
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		email TEXT UNIQUE NOT NULL,
-		age INTEGER
+		age INTEGER,
+		password TEXT
 		)
 	`);
 
@@ -42,15 +43,7 @@ db.run(`
 `);
 
 // db.serialize(() => {
-// 	db.run('DROP TABLE IF EXISTS logs')
-// 	db.run(`
-// 		CREATE TABLE IF NOT EXISTS logs (
-// 			id INTEGER PRIMARY KEY AUTOINCREMENT,
-// 			user_id INTEGER,
-// 			action TEXT,
-// 			timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
-// 		)
-// 	`);
+// 	db.run('ALTER TABLE users ADD COLUMN password TEXT');
 // });
 
 module.exports = db;
