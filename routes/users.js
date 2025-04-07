@@ -37,10 +37,15 @@ const addUser = (req, res) => {
 	if (!email || email.trim() === '') {
 		return res.status(404).json({ error: "Email is required"});
 	}
-	const sql2 = ('SELECT * FROM users WHERE (email) = ?', [email]);
-	if (sql2) return res.status(404).json({ error: "Email already registered"});
-	const sql = 'INSERT INTO users (name, email, age) VALUES (?, ?, ?)';
-	db.run(sql, [name, email, age], function (err) {
+
+	const checkEmailSql = 'SELECT * FROM users WHERE email = ?';
+	db.get(checkEmailSql, [email], (err, row) => {
+		if (err) return res.status(500).json({ error: err.message });
+		if (row) return res.status(404).json({ error: "Email already registered"});
+	})
+
+	const insertSql = 'INSERT INTO users (name, email, age) VALUES (?, ?, ?)';
+	db.run(insertSql, [name, email, age], function (err) {
 		if (err) res.status(500).json({ error: err.message });
 		logAction(this.lastID, 'Added user');
 		res.status(201).json({ 
