@@ -43,7 +43,7 @@ db.run(`
 `);
 
 // db.serialize(() => {
-// 	db.run('ALTER TABLE users ADD COLUMN password TEXT');
+// 	db.run('ALTER TABLE users ADD COLUMN role TEXT DEFAULT "user"');
 // });
 
 module.exports = db;

@@ -1,26 +1,41 @@
+const { checkEmailExistence } = require('./users');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
+const logAction = require('../utils');
 const SECRET = 'supersecret123';
 
-const register = (req, res) => {
+const register = async (req, res) => {
 	const { name, email, password, age } = req.body;
 	if (!name || !email || !password) {
 		return res.status(400).json({ error: 'Missing one or more required fields' });
 	}
 
-	bcrypt.hash(password, 10, (err, hashedPassword) => {
-		if (err) return res.status(500).json({ error: 'Error hashing password' });
+	try {
+		await checkEmailExistence(email);  // Check if email already exists
+	} catch (error) {
+		console.error("Email check failed:", error);
+		return res.status(409).json({ error: error });  // Handle "Email already registered" error
+	}
 
-		const sql = 'INSERT INTO users (name, email, age, password) VALUES (?, ?, ?, ?)';
-		db.run(sql, [name, email, age, hashedPassword], function (err) {
+	try {
+		const hashedPassword = await bcrypt.hash(password, 10);
+
+		const insertSql = 'INSERT INTO users (name, email, age, password) VALUES (?, ?, ?, ?)';
+		db.run(insertSql, [name, email, age, hashedPassword], function (err) {
 			if (err) return res.status(500).json({ error: err.message });
+
+			if (typeof logAction === 'function') logAction(this.lastID, 'User registered')
+
 			res.status(201).json({
-				message: 'User added successfully!',
-				user: { id: this.lastID, name, email, age }
+			message: 'User added successfully!',
+			user: { id: this.lastID, name, email, age }
 			});
 		});
-	});
+	} catch (err) {
+		res.status(409).json({ error: typeof err === 'string' ? err : 'Registration failed' });
+	}
 };
 
 const login = (req, res) => {

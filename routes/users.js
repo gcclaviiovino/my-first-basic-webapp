@@ -41,34 +41,6 @@ const checkEmailExistence = (email) => {
 	});
 };
 
-const addUser = async (req, res) => { // without authentication (== no password)
-	const { name, email, age } = req.body;
-	if (!name || !email) {
-		return res.status(404).json({ error: "Name and email are required"});
-	}
-
-	try {
-		await checkEmailExistence(email);
-	} catch (error) {
-		return res.status(404).json({ error: error });
-	}
-
-	const insertSql = 'INSERT INTO users (name, email, age) VALUES (?, ?, ?)';
-	db.run(insertSql, [name, email, age], function (err) {
-		if (err) res.status(500).json({ error: err.message });
-		logAction(this.lastID, 'Added user');
-		res.status(201).json({ 
-			message: 'User added successfully',
-			user: {
-				id: this.lastID,
-				name,
-				email,
-				age
-			}
-		});
-	});
-};
-
 const deleteUser = (req, res) => {
 	const id = parseInt(req.params.id);
 
@@ -142,8 +114,8 @@ const getUserById = (req, res) => {
 
 module.exports = {
 	getUsers,
-	addUser,
 	deleteUser,
 	updateUser,
 	getUserById,
+	checkEmailExistence,
 };
