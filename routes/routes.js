@@ -4,6 +4,7 @@ const usersController = require('./users');
 const { parrotMake } = require('./parrot');
 const logsController = require('./logs');
 const authController = require('./auth');
+const quotes = require('./quote');
 
 // USERS
 router.get('/users', usersController.getUsers);
@@ -21,5 +22,9 @@ router.get('/logs', logsController.getLogs);
 //AUTH
 router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
+
+// QUOTES
+router.get('/quote/zen', quotes.getZenQuote);
+router.get('/quote/fortune', quotes.getFortuneQuote);
 
 module.exports = router;
