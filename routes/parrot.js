@@ -1,11 +1,3 @@
-// function parrotMake(req, res) {
-// 	let parrot = "  ( )>\n<( v )";
-
-// 	res.json(parrot);
-// }
-
-// module.exports = { parrotMake };
-
 const parrotMake = (req, res) => {
 	res.send(`
 		<!DOCTYPE html>

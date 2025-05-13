@@ -1,14 +1,3 @@
-// const User = require('../models/User'); // the Mongoose model
-
-// if (fs.existsSync(dataFile)) {
-// 	const data = fs.readFileSync(dataFile, 'utf8');
-// 	users = JSON.parse(data);
-// }
-
-// function saveUsersToFile() {
-// 	fs.writeFileSync(dataFile, JSON.stringify(users, null, 2));
-// }
-
 const db = require('../db');
 const logAction = require('../utils');
 

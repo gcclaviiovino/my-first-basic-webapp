@@ -5,23 +5,29 @@ const { parrotMake } = require('./parrot');
 const logsController = require('./logs');
 const authController = require('./auth');
 const quotes = require('./quote');
+const midController = require('./middleware/authMiddleware');
 
-// USER ACTIONS
+// PROFILE
+router.get('/profile', midController.authenticateToken, (req, res) => {
+	res.json({ message: `Welcome ${req.user.email}` });
+});
 router.get('/auth/register', (req, res) => {
 	res.send('Send a POST request to register a user');
 });
 router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);
-router.get('/users', usersController.getUsers);
-router.delete('/users/:id', usersController.deleteUser);
-router.put('/users/:id', usersController.updateUser);
-router.get('/users/:id', usersController.getUserById);
+
+// USER ACTIONS
+router.get('/users', midController.authenticateToken, midController.authorizeAdmin, usersController.getUsers);
+router.delete('/users/:id', midController.authenticateToken, midController.authorizeSelf, usersController.deleteUser);
+router.put('/users/:id', midController.authenticateToken, midController.authorizeSelf, usersController.updateUser);
+router.get('/users/:id', midController.authenticateToken, midController.authorizeAdmin, usersController.getUserById);
 
 // PARROT
 router.get('/parrot', parrotMake);
 
 // LOGS
-router.get('/logs', logsController.getLogs);
+router.get('/logs', midController.authenticateToken, midController.authorizeAdmin, logsController.getLogs);
 
 // QUOTES
 router.get('/quote/zen', quotes.getZenQuote);
