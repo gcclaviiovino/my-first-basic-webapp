@@ -9,10 +9,7 @@ const midController = require('./middleware/authMiddleware');
 
 // PROFILE
 router.get('/profile', midController.authenticateToken, (req, res) => {
-	res.json({ message: `Welcome ${req.user.email}` });
-});
-router.get('/auth/register', (req, res) => {
-	res.send('Send a POST request to register a user');
+	res.json({ message: `Welcome ${req.user.name}` });
 });
 router.post('/auth/register', authController.register);
 router.post('/auth/login', authController.login);

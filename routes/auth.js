@@ -25,7 +25,6 @@ const register = async (req, res) => {
 		db.run(insertSql, [name, email, age, hashedPassword, role], function (err) {
 			if (err) return res.status(500).json({ error: err.message });
 
-			console.log("Registering user with role:", role);
 			if (typeof logAction === 'function') logAction(this.lastID, 'User registered')
 
 			res.status(201).json({
@@ -45,7 +44,6 @@ const login = (req, res) => {
 	db.get(query, [email], async (err, user) => {
 		if (!user || !user.password) return res.status(400).json({ error: 'Invalid credentials' });
 
-		console.log("User fetched from DB during login:", user);
 		const match = await bcrypt.compare(password, user.password);
 		if (!match) return res.status(400).json({ error: 'Wrong password, please try again' });
 
