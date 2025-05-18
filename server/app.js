@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-// const cors = require('cors');
+const cors = require('cors');
 
 require('./db');
 app.use(express.json());
@@ -16,7 +16,7 @@ app.listen(3000, () => {
 	console.log('Server running on port 3000');
 });
 
-// app.use(cors({
-// 	origin: 'http://127.0.0.1:5173/',
-// 	credentials: true
-// }))
+app.use(cors({
+	origin: 'http://127.0.0.1:5173/',
+	credentials: true
+}))
