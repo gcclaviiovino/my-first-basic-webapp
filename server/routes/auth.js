@@ -6,7 +6,7 @@ const { checkEmailExistence } = require('./users');
 const SECRET = 'veryextrematysecret123';
 
 const register = async (req, res) => {
-	const { name, email, password, age } = req.body;
+	const { name, email, password, birthDate } = req.body;
 	if (!name || !email || !password ) {
 		return res.status(400).json({ error: 'Missing one or more required fields' });
 	}
@@ -21,15 +21,15 @@ const register = async (req, res) => {
 	try {
 		const hashedPassword = await bcrypt.hash(password, 10);
 		const role = req.body.role || 'user';
-		const insertSql = 'INSERT INTO users (name, email, age, password, role) VALUES (?, ?, ?, ?, ?)';
-		db.run(insertSql, [name, email, age, hashedPassword, role], function (err) {
+		const insertSql = 'INSERT INTO users (name, email, birthDate, password, role) VALUES (?, ?, ?, ?, ?)';
+		db.run(insertSql, [name, email, birthDate, hashedPassword, role], function (err) {
 			if (err) return res.status(500).json({ error: err.message });
 
 			if (typeof logAction === 'function') logAction(this.lastID, 'User registered')
 
 			res.status(201).json({
 			message: 'User added successfully!',
-			user: { id: this.lastID, name, email, age }
+			user: { id: this.lastID, name, email, birthDate }
 			});
 		});
 	} catch (err) {
@@ -47,8 +47,29 @@ const login = (req, res) => {
 		const match = await bcrypt.compare(password, user.password);
 		if (!match) return res.status(400).json({ error: 'Wrong password, please try again' });
 
-		const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET, { expiresIn: '2h' });
-		res.json({ message: 'Login successful', token});
+		const { differenceInYears, parseISO } = require('date-fns');
+		let age = null;
+		if (user.birthDate) {
+			try {
+					age = differenceInYears(new Date(), parseISO(user.birthDate));
+			} catch (err) {
+				console.error('Error parsing birthDate:', err);
+			}
+		}
+
+		const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, SECRET, {expiresIn: '2h' });
+
+		res.json({ 
+			message: 'Login successful',
+			token,
+			user: {
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			birthDate: user.birthDate,
+			age,
+			role: user.role
+		}});
 	});
 };
 

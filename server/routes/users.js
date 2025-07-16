@@ -62,9 +62,9 @@ const updateUser = (req, res) => {
 		fields.push('email = ?');
 		values.push(email);
 	}
-	if (age) {
-		fields.push('age = ?');
-		values.push(age);
+	if (birthDate) {
+		fields.push('birthDate = ?');
+		values.push(birthDate);
 	}
 
 	if (fields.lenght === 0) return res.status(400).json({ error: 'No fields provided to update' });

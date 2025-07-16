@@ -14,7 +14,7 @@ db.run(`
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name TEXT NOT NULL,
 		email TEXT UNIQUE NOT NULL,
-		age INTEGER,
+		birthDate TEXT,
 		password TEXT
 		)
 	`);
@@ -29,7 +29,8 @@ db.run(`
 `);
 
 // db.serialize(() => {
-// 	db.run('ALTER TABLE users ADD COLUMN role TEXT DEFAULT "user"');
+// 	db.run('ALTER TABLE users RENAME COLUMN age TO birthDate');
+// 	db.run('ALTER TABLE users ALTER COLUMN birthDate TYPE TEXT;');
 // });
 
 module.exports = db;

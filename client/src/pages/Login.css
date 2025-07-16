@@ -3,7 +3,6 @@ body, html {
 	width: 100%;
 	font-family: Arial, sans-serif;
 	overflow: hidden;
-	/* background: linear-gradient(to bottom, #5d00ff, #bf9aff); */
 }
 
 body::before {
