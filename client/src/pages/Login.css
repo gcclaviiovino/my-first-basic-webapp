@@ -46,12 +46,14 @@ input[type="password"] {
 	border-radius: 4px;
 	font-size: 14px;
 	box-sizing: border-box;
+	color: #222;
+	background-color: #ccc;
 }
 
 input:focus {
   border-color: #5d00ff;
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 5px #8e4cff;
 }
 
 button {

@@ -47,11 +47,16 @@ const login = (req, res) => {
 		const match = await bcrypt.compare(password, user.password);
 		if (!match) return res.status(400).json({ error: 'Wrong password, please try again' });
 
-		const { differenceInYears, parseISO } = require('date-fns');
+		const { differenceInYears, parseISO, isValid } = require('date-fns');
 		let age = null;
 		if (user.birthDate) {
 			try {
-					age = differenceInYears(new Date(), parseISO(user.birthDate));
+				const parsedDate = parseISO(user.birthDate);
+				if (isValid(parsedDate)) {
+					age = differenceInYears(new Date(), parsedDate);
+				} else {
+					console.error('Invalid birthDate format:', user.birthDate);
+				}
 			} catch (err) {
 				console.error('Error parsing birthDate:', err);
 			}

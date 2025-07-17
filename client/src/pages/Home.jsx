@@ -13,7 +13,7 @@ function HeroSection() {
 function FunSection() {
     return (
         <section className="fun-section">
-            <p>Or just take some tike to have fun.</p>
+            <p>Or just take some time to have fun.</p>
         </section>
     );
 }

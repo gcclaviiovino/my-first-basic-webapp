@@ -49,7 +49,7 @@ const deleteUser = (req, res) => {
 
 const updateUser = (req, res) => {
 	const id = parseInt(req.params.id);
-	const { name, email, age } = req.body;
+	const { name, email, birthDate } = req.body;
 
 	const fields = [];
 	const values = [];
@@ -67,7 +67,7 @@ const updateUser = (req, res) => {
 		values.push(birthDate);
 	}
 
-	if (fields.lenght === 0) return res.status(400).json({ error: 'No fields provided to update' });
+	if (fields.length === 0) return res.status(400).json({ error: 'No fields provided to update' });
 
 	values.push(id);
 
