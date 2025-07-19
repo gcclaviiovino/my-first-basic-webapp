@@ -1,4 +1,4 @@
-# My (Your) First Basic Website
+# My (Your) First Basic Web App
 
 👋 Hi there! I’m $\color{Yellow}{\textsf{Lavi}}$, a 19-year-old woman taking her first steps in the tech world.
 
@@ -20,7 +20,7 @@ As I added more features to my back end — which started as a simple server wit
 
 ## 🪜 Project Structure
 
-<pre><code>my-first-basic-website/ 
+<pre><code>my-first-basic-webapp/ 
 ├── client/ # React front end 
 ├── server/ # Node.js back end 
 └── README.md # You're reading it! </code></pre>
@@ -30,8 +30,8 @@ As I added more features to my back end — which started as a simple server wit
 
 ### 1. Clone the repository
 ```bash
-git clone git@github.com:gcclaviiovino/my-first-basic-website.git
-cd my-first-basic-website
+git clone git@github.com:gcclaviiovino/my-first-basic-webapp.git
+cd my-first-basic-webapp
 ```
 ### 2. Run the project
 
