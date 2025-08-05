@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import './Quotes.css';
-import { useNavigate } from "react-router-dom";
 
 function	MainSection () {
 	return (

@@ -20,6 +20,8 @@ function Login() {
 		const data = await res.json();
 		if (res.ok) {
 			console.log(data.token);
+			localStorage.setItem('token', data.token);
+			localStorage.setItem('user', JSON.stringify(data.user)); 
 			navigate('/dashboard');
 		} else {
 			alert(data.error || 'Login failed');
