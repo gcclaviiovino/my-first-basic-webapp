@@ -10,6 +10,8 @@ const Dashboard = () => {
   const [showUserIdInput, setShowUserIdInput] = useState(false);
   const [userIdInput, setUserIdInput] = useState('');
   const [searchedUser, setSearchedUser] = useState(null);
+  const [showModifyChoices, setShowModifyChoices] = useState(false);
+  const [fieldsToModify, setFieldsToModify] = useState([]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
@@ -120,6 +122,86 @@ const Dashboard = () => {
     }
   };
 
+  // const changeSelf = async () => {
+  //   const newName = prompt('Enter your new name:', user.name);
+  //   const newEmail = prompt('Enter your new email:', user.email);
+  //   const newBirthDate = prompt('Enter your new birth date (YYYY-MM-DD):', user.birthDate || '');
+  //   if (!newName && !newEmail && !newBirthDate) {
+  //     alert('No changes made.');
+  //     return;
+  //   }
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const response = await fetch(`/api/users/${user.id}`, {
+  //       method: 'PUT',
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: JSON.stringify({
+  //         ...(newName ? { name: newName } : {}),
+  //         ...(newEmail ? { email: newEmail } : {}),
+  //         ...(newBirthDate ? { birthDate: newBirthDate } : {})
+  //       })
+  //     });
+  //     if (!response.ok) {
+  //       throw new Error('Failed to update user info');
+  //     }
+  //     const updatedUser = await response.json();
+  //     setUser(updatedUser);
+  //     localStorage.setItem('user', JSON.stringify(updatedUser));
+  //     alert('Profile updated successfully.');
+  //   } catch (err) {
+  //     console.error('Error updating user info:', err);
+  //     alert('Error updating profile.');
+  //   }
+  // };
+
+  // const handleModifyClick = () => {
+  //   setShowModifyChoices(true);
+  //   setFieldsToModify([]);
+  // };
+
+  const handleProfileUpdate = async (fieldsToModify, user, setUser, setShowModifyChoices, setFieldsToModify) => {
+    let updates = {};
+    for (const field of fieldsToModify) {
+      let promptText = `Enter your new ${field.replace('birthDate', 'birth date (YYYY-MM-DD)')}:`;
+      let defaultValue = user[field] || '';
+      let newValue = prompt(promptText, defaultValue);
+      if (newValue) updates[field] = newValue;
+    }
+    if (Object.keys(updates).length === 0) {
+      alert('No changes made.');
+      setShowModifyChoices(false);
+      setFieldsToModify([]);
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/api/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updates)
+      });
+      if (!response.ok) throw new Error('Failed to update user info');
+      const updatedUser = await response.json();
+      setUser(updatedUser);
+      localStorage.setItem('user', JSON.stringify(updatedUser));
+      alert('Profile updated successfully.');
+    } catch (err) {
+      console.error('Error updating user info:', err);
+      alert('Error updating profile.');
+    }
+
+    setShowModifyChoices(false);
+    setFieldsToModify([]);
+  };
+
+
   if (loading) {
     return <div className="dashboard-container">Loading dashboard...</div>;
   }
@@ -133,7 +215,7 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboardDiv">
       <h1>Welcome, {user.name}!</h1>
       <p>ID: {user.id}</p>
       <p>Email: {user.email}</p>
@@ -165,6 +247,41 @@ const Dashboard = () => {
         )}
         </div>
       )}
+
+      {user.role === 'user' && (
+        <div className="user-panel">
+          <h3>User Panel</h3>
+          <p>You can modify your profile</p>
+          <div className="button-row">
+            <button
+              onClick={() => {
+                setShowModifyChoices(true);
+                setFieldsToModify([]);
+              }}
+              className="changeSelf-button"
+            >
+              Modify your personal information
+            </button>
+          </div>
+          {showModifyChoices && (
+            <div className="modify-container">
+              <p>Select the field(s) you want to modify:</p>
+              <button onClick={() => setFieldsToModify(prev => [...prev, 'name'])} disabled={fieldsToModify.includes('name')}>Name</button>
+              <button onClick={() => setFieldsToModify(prev => [...prev, 'email'])} disabled={fieldsToModify.includes('email')}>Email</button>
+              <button onClick={() => setFieldsToModify(prev => [...prev, 'birthDate'])} disabled={fieldsToModify.includes('birthDate')}>Birth Date</button>
+              {fieldsToModify.length > 0 && (
+                <button onClick={() =>
+                  handleProfileUpdate(fieldsToModify, user, setUser, setShowModifyChoices, setFieldsToModify)
+                }>
+                  Submit Changes
+                </button>
+              )}
+              <button onClick={() => { setShowModifyChoices(false); setFieldsToModify([]); }}>Cancel</button>
+            </div>
+          )}
+        </div>
+      )
+      }
 
       <button onClick={handleLogout} className="logout-button">Logout</button>
     </div>

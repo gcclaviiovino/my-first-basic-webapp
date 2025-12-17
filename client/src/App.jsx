@@ -5,12 +5,14 @@ import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import Parrot from "./pages/Parrot";
 import Quotes from "./pages/Quotes";
+import Features from './pages/Features';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/features" element={<Features />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />

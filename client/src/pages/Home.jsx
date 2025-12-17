@@ -1,40 +1,20 @@
-import './Home.css';
 import { useNavigate } from "react-router-dom";
-
-function HeroSection() {
-    return (
-        <section className="hero-section">
-            <h1>Welcome to liovino's little server!</h1>
-            <p>You can get started by logging in or creating a new account.</p>
-        </section>
-    );
-}
-
-function FunSection() {
-    return (
-        <section className="fun-section">
-            <p>Or just take some time to have fun.</p>
-        </section>
-    );
-}
+import './Home.css';
 
 function Home() {
-    const navigate = useNavigate();
+	const navigate = useNavigate();
 
-    return (
-        <div className="home-container">
-            <HeroSection />
-            <div className="button-row">
-                <button onClick={() => navigate("/login")}>Login</button>
-                <button onClick={() => navigate("/register")}>Register</button>
-            </div>
-            <FunSection />
-            <div className="button-row">
-                <button onClick={() => navigate("/parrot")}>Parrot Party Zone</button>
-                <button onClick={() => navigate("/quotes")}>Quote Generator</button>
-            </div>
-        </div>
-    );
+	return (
+		<div className="home-container">
+			<div className="welcome-badge">Welcome to</div>
+			<h1 className="main-title">
+				Web App<br />Basics.
+			</h1>
+			<button className="get-started-btn" onClick={() => navigate("/features")}>
+				Get started
+			</button>
+		</div>
+	);
 }
 
 export default Home;

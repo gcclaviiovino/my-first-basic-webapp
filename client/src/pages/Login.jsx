@@ -29,24 +29,41 @@ function Login() {
 	};
 
 	return (
-		<div className="loginDiv">
-			<h2>Login</h2>
-			<form onSubmit={handleSubmit}>
-				<input
-					type="email"
-					placeholder="Email"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-				/><br/>
-				<input
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-				/><br/>
-				<button type="submit">Login</button>
-			</form>
-			{message && <p>{message}</p>}
+		<div className="login-wrapper">
+			<div className="loginDiv">
+				<div className="login-logo">
+					<img src="/assets/logo.png" alt="Logo" />
+				</div>
+				<h2 className="login-title">Welcome back!</h2>
+				<p className="login-subtitle">
+					Don't have an account? <span className="signup-link" onClick={() => navigate('/register')}>Sign up</span>
+				</p>
+				<form onSubmit={handleSubmit}>
+					<div className="input-group">
+						<input
+							type="email"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							required
+						/>
+						<span className="input-label">Username</span>
+						<i className="input-underline"></i>
+					</div>
+					<div className="input-group">
+						<input
+							type="password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							required
+						/>
+						<span className="input-label">Password</span>
+						<i className="input-underline"></i>
+					</div>
+					<button type="submit" className="signin-btn">Sign In</button>
+				</form>
+				<p className="forgot-password">Forgot Password?</p>
+				{message && <p className="error-message">{message}</p>}
+			</div>
 		</div>
 	);
 }
