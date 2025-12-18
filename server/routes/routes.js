@@ -8,9 +8,6 @@ const quotes = require('./quote');
 const midController = require('./middleware/authMiddleware');
 
 
-// MAIN
-
-router.get('/features', )
 // PROFILE
 router.get('/profile', midController.authenticateToken, (req, res) => {
 	res.json({ message: `Welcome ${req.user.name}` });

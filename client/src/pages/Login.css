@@ -78,13 +78,13 @@ body, html {
 	opacity: 0.8;
 }
 
-.input-group {
+.loginDiv .input-group {
 	position: relative;
 	margin-bottom: 2rem;
 	width: 100%;
 }
 
-.input-group input {
+.loginDiv .input-group input {
 	position: relative;
 	width: 100%;
 	height: 44px;
@@ -102,7 +102,7 @@ body, html {
 	line-height: 44px;
 }
 
-.input-group input:focus {
+.loginDiv .input-group input:focus {
 	border-bottom: 2px solid transparent;
 }
 
@@ -126,7 +126,7 @@ body, html {
 	font-size: 0.85rem;
 }
 
-.input-underline {
+.loginDiv .input-underline {
 	position: absolute;
 	left: 0;
 	bottom: 0;
@@ -139,12 +139,12 @@ body, html {
 	z-index: 9;
 }
 
-.input-group input:valid ~ .input-underline,
-.input-group input:focus ~ .input-underline {
+.loginDiv .input-group input:valid ~ .input-underline,
+.loginDiv .input-group input:focus ~ .input-underline {
 	height: 44px;
 }
 
-.signin-btn {
+.loginDiv .signin-btn {
 	width: 100%;
 	padding: 1rem;
 	margin-top: 1rem;
@@ -159,7 +159,7 @@ body, html {
 	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
-.signin-btn:hover {
+.loginDiv .signin-btn:hover {
 	background: #f3e6ff;
 	border-color: #4800d9;
 	color: #4800d9;
@@ -167,7 +167,7 @@ body, html {
 	box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
-.signin-btn:active {
+.loginDiv .signin-btn:active {
 	transform: translateY(0);
 }
 

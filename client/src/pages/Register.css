@@ -1,62 +1,229 @@
-.registerDiv {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  backdrop-filter: blur(12px);
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  text-align: center;
-  font-size: 14px;
+body, html {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	min-height: 100vh;
 }
 
-input[type="text"],
-input[type="name"],
-input[type="email"],
-input[type="password"],
-input[type="role"] {
+.register-wrapper {
+	min-height: 100vh;
 	width: 100%;
-	padding: 10px;
-	margin-top: 8px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	font-size: 14px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: 
+		radial-gradient(circle 200px at 15% 15%, rgba(173, 250, 255, 0.7) 0%, rgba(173, 250, 255, 0.35) 30%, transparent 70%),
+		radial-gradient(circle 250px at 85% 85%, rgba(173, 250, 255, 0.6) 0%, rgba(173, 250, 255, 0.25) 35%, transparent 70%),
+		radial-gradient(circle 180px at 35% 75%, rgba(173, 250, 255, 0.65) 0%, rgba(173, 250, 255, 0.3) 30%, transparent 65%),
+		radial-gradient(circle 220px at 75% 25%, rgba(173, 250, 255, 0.55) 0%, rgba(173, 250, 255, 0.2) 35%, transparent 70%),
+		linear-gradient(135deg, #7e29ff 0%, #4800d9 45%, #4800d9 100%);
+	background-attachment: fixed;
+	font-family: 'Segoe UI', 'Aptos', 'Helvetica Neue', Arial, sans-serif;
+}
+
+.registerDiv {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 50%;
+	max-width: 700px;
+	display: flex;
+	background: white;
+	border-radius: 0 30px 30px 0;
+	box-shadow: 8px 0 32px rgba(0, 0, 0, 0.2);
+	overflow: hidden;
+}
+
+.register-form-container {
+	width: 100%;
+	padding: 3rem 4rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+	background: white;
+}
+
+.login-logo {
+	width: 80px;
+	height: 80px;
+	margin: 0 auto 1rem;
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+.login-logo img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.register-title {
+	font-size: 3rem;
+	font-weight: 700;
+	color: #000;
+	margin: 0 0 0.3rem 0;
+	font-family: 'Pragmatica Extended', 'Arial Black', sans-serif;
+}
+
+.register-subtitle {
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.5);
+	margin: 0 0 2rem 0;
+}
+
+.registerDiv .input-group {
+	position: relative;
+	margin-bottom: 1.5rem;
+	width: 100%;
+}
+
+.form-row {
+	display: flex;
+	gap: 1rem;
+	width: 100%;
+	margin-bottom: 1.5rem;
+}
+
+.half-width {
+	flex: 1;
+	height: 44px;
+}
+
+.registerDiv .half-width .input-group {
+	margin-bottom: 0;
+}
+
+.registerDiv .input-group input {
+	position: relative;
+	width: 100%;
+	height: 44px;
+	padding: 0 0.8rem;
+	background: transparent;
+	border: none !important;
+	border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+	font-size: 1rem;
+	color: white;
 	box-sizing: border-box;
+	transition: 0.5s;
+	z-index: 10;
+	outline: none;
+	box-shadow: none;
+	line-height: 44px;
+}
+
+.registerDiv .input-group input:focus {
+	border-bottom: 2px solid transparent;
+}
+
+.registerDiv .input-label {
+	position: absolute;
+	left: 0.8rem;
+	top: 50%;
+	transform: translateY(-50%);
+	padding: 0;
+	font-size: 1rem;
+	color: rgba(0, 0, 0, 0.4);
+	letter-spacing: 0.05em;
+	transition: 0.5s;
+	pointer-events: none;
+}
+
+.registerDiv .input-group input:valid ~ .input-label,
+.registerDiv .input-group input:focus ~ .input-label {
+	color: #7e29ff;
+	transform: translateY(-2.6rem);
+	font-size: 0.85rem;
+}
+
+.registerDiv .input-underline {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 2px;
+	background: #7e29ff;
+	border-radius: 4px;
+	transition: 0.5s;
+	pointer-events: none;
+	z-index: 9;
+}
+
+.registerDiv .input-group input:valid ~ .input-underline,
+.registerDiv .input-group input:focus ~ .input-underline {
+	height: 44px;
+}
+
+.registerDiv .signin-btn {
+	width: 100%;
+	padding: 1rem;
+	margin-top: 1rem;
+	background: #7e29ff;
+	color: white;
+	font-size: 1.05rem;
+	font-weight: 600;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	box-shadow: 0 4px 16px rgba(126, 41, 255, 0.3);
+}
+
+.registerDiv .signin-btn:hover {
+	background: #6a1fdb;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(126, 41, 255, 0.4);
+}
+
+.registerDiv .signin-btn:active {
+	transform: translateY(0);
+}
+
+.error-message {
+	margin-top: 1rem;
+	font-size: 0.9rem;
+	color: #ff6b6b;
+	background: rgba(255, 107, 107, 0.1);
+	padding: 0.5rem;
+	border-radius: 10px;
 }
 
 .react-datepicker-wrapper {
-  outline: none;
-  width: 100%;
-  padding: 10px;
-  margin: 8px 0;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-family: Arial, sans-serif;
-  box-sizing: border-box;
+	width: 100%;
 }
 
-input[type="date"]:not(:valid) {
-  color: #999; /* lighter gray for "placeholder" effect */
-}
-
-.registerDiv button {
-  padding: 10px 20px;
-  margin-top: 10px;
-  background-color: #5d00ff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.registerDiv button:hover {
-  background-color: #4700cc;
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
+@media (max-width: 768px) {
+	.registerDiv {
+		position: relative;
+		width: 90%;
+		max-width: 450px;
+		left: auto;
+		height: auto;
+		border-radius: 30px;
+	}
+	
+	.register-form-container {
+		padding: 2rem 2rem;
+	}
+	
+	.register-title {
+		font-size: 1.8rem;
+	}
+	
+	.login-logo {
+		width: 70px;
+		height: 70px;
+		font-size: 2rem;
+	}
+	
+	.form-row {
+		flex-direction: column;
+		gap: 0;
+	}
 }

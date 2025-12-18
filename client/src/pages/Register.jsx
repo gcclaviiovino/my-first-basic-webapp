@@ -7,9 +7,11 @@ import CalendarDropdown from '../components/calendarDropdown.jsx';
 
 function Register() {
 	const navigate = useNavigate();
+	const [step, setStep] = useState(1);
 
 	const [ formData, setFormData ] = useState({
 		name: '',
+		surname: '',
 		email: '',
 		birthDate: null,
 		password: '',
@@ -92,52 +94,115 @@ function Register() {
 		confirmPassword === password || 'The passwords do not match',
 	];
 
+	const handleContinue = (e) => {
+		e.preventDefault();
+		if (!formData.name || !formData.birthDate) {
+			setError('Please fill in all required fields');
+			return;
+		}
+		setError('');
+		setStep(2);
+	};
+
 	return (
-		<div className="registerDiv">
-		<h2>Register</h2>
-		<form onSubmit={handleSubmit}>
-			<input
-				type="text"
-				name="name"
-				placeholder="Name"
-				value={formData.name}
-				onChange={handleChange}
-			/><br/>
-			<CalendarDropdown
-				selectedDate={formData.birthDate}
-				onChange={(date) => setFormData(prev => ({ ...prev, birthDate: date }))}
-			/><br/>
-			<input
-				type="email"
-				name="email"
-				placeholder="Email"
-				value={formData.email}
-				onChange={handleChange}
-			/><br/>
-			<input
-				type="password"
-				name="password"
-				placeholder="Password"
-				value={formData.password}
-				onChange={handleChange}
-			/><br/>
-			<input
-				type="password"
-				name="confirmPassword"
-				placeholder="Confirm Password"
-				value={formData.confirmPassword}
-				onChange={handleChange}
-			/><br/>
-			<input
-				type="text"
-				name="role"
-				placeholder="Role (user/admin)"
-				value={formData.role}
-				onChange={handleChange}
-			/><br/>
-			<button type="submit">Register</button>
-			{error && <p className="error">{error}</p>}
-		</form>
+		<div className="register-wrapper">
+			<div className="registerDiv">
+				<div className="register-form-container">
+					<div className="login-logo">
+						<img src="/assets/logo.png" alt="Logo" />
+					</div>
+					<h2 className="register-title">Welcome!</h2>
+					<p className="register-subtitle">
+						{step === 1 ? 'A minute to sign up, many more to enjoy our features' : 'A minute to sign up, many more to enjoy our features'}
+					</p>
+					
+					{step === 1 ? (
+						<form onSubmit={handleContinue}>
+						<div className="input-group">
+							<input
+								type="text"
+								name="name"
+								value={formData.name}
+								onChange={handleChange}
+								required
+							/>
+							<span className="input-label">Name</span>
+							<i className="input-underline"></i>
+						</div>
+						<div className="input-group">
+							<input
+								type="text"
+								name="surname"
+								value={formData.surname}
+								onChange={handleChange}
+								required
+							/>
+							<span className="input-label">Surname</span>
+							<i className="input-underline"></i>
+						</div>
+						<div className="form-row">
+							<div className="input-group half-width">
+								<CalendarDropdown
+									selectedDate={formData.birthDate}
+									onChange={(date) => setFormData(prev => ({ ...prev, birthDate: date }))}
+								/>
+							</div>
+							<div className="input-group half-width">
+								<input
+									type="text"
+									name="role"
+									value={formData.role}
+									onChange={handleChange}
+									required
+								/>
+								<span className="input-label">Role</span>
+								<i className="input-underline"></i>
+							</div>
+						</div>
+						<button type="submit" className="signin-btn">Continue</button>
+						{error && <p className="error-message">{error}</p>}
+					</form>
+				) : (
+					<form onSubmit={handleSubmit}>
+						<div className="input-group">
+							<input
+								type="email"
+								name="email"
+								value={formData.email}
+								onChange={handleChange}
+								required
+							/>
+							<span className="input-label">Email</span>
+							<i className="input-underline"></i>
+						</div>
+						<div className="input-group">
+							<input
+								type="password"
+								name="password"
+								value={formData.password}
+								onChange={handleChange}
+								required
+							/>
+							<span className="input-label">Password</span>
+							<i className="input-underline"></i>
+						</div>
+						<div className="input-group">
+							<input
+								type="password"
+								name="confirmPassword"
+								value={formData.confirmPassword}
+								onChange={handleChange}
+								required
+							/>
+							<span className="input-label">Confirm Password</span>
+							<i className="input-underline"></i>
+						</div>
+						<button type="submit" className="signin-btn">Sign Up</button>
+						{error && <p className="error-message">{error}</p>}
+					</form>
+				)}
+				</div>
+			</div>
 		</div>
 	);
 }

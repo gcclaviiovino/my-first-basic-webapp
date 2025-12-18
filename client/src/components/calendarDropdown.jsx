@@ -1,22 +1,29 @@
 // /components/CustomDatePicker.jsx
 import React from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css'; // base styles
-import './calendarDropdown.css'; // our custom styles
+import './calendarDropdown.css';
 
 function calendarDropdown({ selectedDate, onChange }) {
+  const handleChange = (e) => {
+    const value = e.target.value;
+    // Convert string to Date object to match the expected format
+    onChange(value ? new Date(value) : null);
+  };
+
+  // Convert Date object to YYYY-MM-DD string for input value
+  const dateValue = selectedDate ? selectedDate.toISOString().split('T')[0] : '';
+
   return (
-    <DatePicker
-      selected={selectedDate}
-      onChange={onChange}
-      showMonthDropdown
-      showYearDropdown
-      scrollableYearDropdown
-      dateFormat="yyyy-MM-dd"
-      placeholderText="Select your birth date"
-      className="custom-date-input"
-      dropdownMode="select" // dropdown instead of scroll
-    />
+    <div className="date-input-container">
+      <input
+        type="date"
+        value={dateValue}
+        onChange={handleChange}
+        placeholder="DD/MM/YYYY"
+        className="custom-date-input"
+      />
+      <span className="date-input-label">Birth Date</span>
+      <i className="date-input-underline"></i>
+    </div>
   );
 }
 
